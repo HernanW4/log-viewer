@@ -1,0 +1,24 @@
+{
+  "name": "log-viewer",
+  "version": "1.0.0",
+  "description": "A real-time log viewer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HernanW4/log-viewer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HernanW4/log-viewer/issues"
+  },
+  "homepage": "https://github.com/HernanW4/log-viewer#readme",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}

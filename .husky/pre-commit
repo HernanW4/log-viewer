@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Running server lint..."
+(cd server && npm run lint) || exit 1
+
+echo "Running client lint..."
+(cd client && npm run lint) || exit 1
+
+echo "Linting complete. Commiting..."
