@@ -1,4 +1,3 @@
-import { IncomingMessage } from "http";
 import { WebSocket, RawData } from "ws";
 
 export class ClientConnection{
