@@ -2,9 +2,9 @@
   "name": "log-viewer",
   "version": "1.0.0",
   "description": "A real-time log viewer",
-  "main": "index.js",
+  "author": "Walter Hernandez",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
   "repository": {
@@ -12,8 +12,6 @@
     "url": "git+https://github.com/HernanW4/log-viewer.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/HernanW4/log-viewer/issues"
   },
