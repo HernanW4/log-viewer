@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/HernanW4/log-viewer#readme",
   "devDependencies": {
+    "@types/ws": "^8.18.1",
     "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
   }
 }

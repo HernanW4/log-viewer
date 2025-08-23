@@ -1,19 +1,38 @@
-import express, { Request, Response } from "express";
-import dotenv from "dotenv";
+import { WebSocketServer } from "ws";
+import dotenv from 'dotenv'
 
-// configures dotenv to work in your application
+import { LogLevel, LogMessage } from "./types.js"
+import { ClientConnection } from "./ClientConnection.js";
+
 dotenv.config();
-const app = express();
 
-const PORT = process.env.PORT || 3000;
+const port: number  = process.env.PORT ? parseInt(process.env.PORT, 10): 3000;
 
-app.get("/", (request: Request, response: Response) => { 
-  response.status(200).send("Hello World!");
-}); 
+const wss = new WebSocketServer({port: port});
 
-app.listen(PORT, () => { 
-  console.log("Server running at PORT: ", PORT); 
-}).on("error", (error) => {
-  // gracefully handle error
-  throw new Error(error.message);
+wss.on('connection', (ws) =>{
+  new ClientConnection(ws);
 });
+
+// Dummy Logs
+// TODO: Maybe have a Lorem file and it will randomize message from there? 
+const createDummyLog = (): LogMessage => {
+  const logLevels = Object.values(LogLevel);
+  const randomLevel = logLevels[Math.floor(Math.random() * logLevels.length)];
+  return {
+    timestamp: new Date().toISOString(),
+    level: randomLevel,
+    message: `Dummy Log.`,
+  };
+};
+
+setInterval(() => {
+  const logData = createDummyLog();
+  const message = JSON.stringify(logData);
+
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message);
+    }
+  });
+}, 3000); // 3 seconds interval
