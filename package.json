@@ -4,6 +4,7 @@
   "description": "A real-time log viewer",
   "author": "Walter Hernandez",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "prepare": "husky install"
   },
