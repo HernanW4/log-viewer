@@ -2,7 +2,7 @@ import { WebSocketServer } from "ws";
 import dotenv from 'dotenv'
 
 import { LogLevel, LogMessage } from "./types.js"
-import { ClientConnection } from "./ClientConnection.js";
+import { ClientConnection } from "./client-connection.js";
 
 dotenv.config();
 
