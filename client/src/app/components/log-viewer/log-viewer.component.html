@@ -1,0 +1,9 @@
+<div class="log-container">
+  <h2>Live Log Stream</h2>
+  <div class="log-entry" *ngFor="let log of logs" [ngClass]="log.level.toLowerCase()">
+    <span class="timestamp">{{ log.timestamp | date:'medium' }}</span>
+    <span class="level">[{{ log.level }}]</span>
+    <span class="message">{{ log.message }}</span>
+  </div>
+  <p *ngIf="logs.length === 0">Waiting for logs...</p>
+</div>
