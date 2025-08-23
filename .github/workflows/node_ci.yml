@@ -38,7 +38,7 @@ jobs:
 
   build-client:
 
-    name: Build and Test Server
+    name: Build and Test Client
     runs-on: ubuntu-latest
 
     strategy:
