@@ -19,7 +19,7 @@ jobs:
             - name: Build Client Docker Image
               uses: docker/build-push-action@v6
               with:
-                file: ./client/Dockerfile
+                context: ./client
                 push: false
                 tags: log-viewer-client-image:latest
     build-server:
@@ -33,7 +33,7 @@ jobs:
             - name: Build Server Docker Image
               uses: docker/build-push-action@v6
               with:
-                file: ./server/Dockerfile
+                context: ./server
                 push: false
                 tags: log-viewer-server-image:latest
 
