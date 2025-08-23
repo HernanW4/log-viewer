@@ -1,19 +1,18 @@
-import express, { Request, Response } from "express";
-import dotenv from "dotenv";
+import { WebSocketServer } from "ws";
+import dotenv from 'dotenv'
 
-// configures dotenv to work in your application
 dotenv.config();
-const app = express();
 
-const PORT = process.env.PORT || 3000;
+const port:number  = process.env.PORT ? parseInt(process.env.PORT, 10): 3000;
 
-app.get("/", (request: Request, response: Response) => { 
-  response.status(200).send("Hello World");
-}); 
+const wss = new WebSocketServer({port: port});
 
-app.listen(PORT, () => { 
-  console.log("Server running at PORT: ", PORT); 
-}).on("error", (error) => {
-  // gracefully handle error
-  throw new Error(error.message);
+wss.on('connection', function connection(ws){
+  ws.on('error', console.error);
+
+  ws.on('message', function message(data){
+    console.log('received: %s', data);
+  })
+
+  ws.send('sending something');
 });
