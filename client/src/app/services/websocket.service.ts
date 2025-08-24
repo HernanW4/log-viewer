@@ -74,7 +74,7 @@ export class WebsocketService {
   }
 
   //Bye bye socket
-  private close(): void{
+  public close(): void{
     if (this.socket){
       this.intentionalClose = true;
       this.reconnectAttempts = 0;

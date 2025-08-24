@@ -1,23 +1,104 @@
-.log-container {
-  font-family: monospace;
-  background-color: #2e2e2e;
+.log-viewer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #1e1e1e;
   color: #d4d4d4;
-  padding: 15px;
-  border-radius: 5px;
-  max-height: 80vh;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #252526;
+  border-bottom: 1px solid #333;
+}
+
+.filter-container {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 8px;
+  background-color: #3c3c3c;
+  border: 1px solid #555;
+  color: #d4d4d4;
+  border-radius: 4px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-button {
+  padding: 8px 12px;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: #005f9e;
+}
+
+.stop-button {
+  background-color: #d44;
+}
+
+.stop-button:hover {
+  background-color: #b43;
+}
+
+.autoscroll-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.log-display-area {
+  flex-grow: 1;
   overflow-y: auto;
+  padding: 10px;
 }
 
 .log-entry {
-  padding: 2px 0;
-  border-bottom: 1px solid #444;
+  display: flex;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid #2a2a2a;
 }
 
-.timestamp { color: #8c8c8c; margin-right: 15px; }
-.level { font-weight: bold; margin-right: 10px; }
+.log-timestamp {
+  color: #6a9955;
+  margin-right: 15px;
+  white-space: nowrap;
+}
 
-/* Log level colors */
-.info .level { color: #6db3e6; }
-.warn .level { color: #e6c76d; }
-.error .level { color: #e66d6d; }
-.debug .level { color: #b86de6; }
+.log-level {
+  margin-right: 15px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.log-message {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-level-info { background-color: #264f78; color: #9cdcfe; }
+.log-level-warn { background-color: #856d3a; color: #ffd700; }
+.log-level-error { background-color: #8b1a1a; color: #f44747; }
+.log-level-debug { background-color: #565656; color: #b0b0b0; }
+.log-level-unknown { background-color: #444; color: #ccc; }
