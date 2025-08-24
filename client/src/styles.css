@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --header-bg: hsla(0,0%,100%,.8);
+  --header-border: hsla(0,0%,0%,.08);
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f7f8f8;
+  --color-bg-tertiary: #eff0f1;
+  --color-bg-quaternary: #e8e9ea;
+  --color-text-primary: #08090a;
+  --color-text-secondary: #3a3f48;
+  --color-text-tertiary: #6a6f78;
+  --color-border-primary: #e8e9ea;
+  --color-border-secondary: #d0d1d2;
+  --color-accent: #3f51b5;
+  --color-accent-hover: #314194;
+}
+
+.dark-mode{
+    --header-bg: hsla(0,0%,4%,.8);
+  --header-border: hsla(0,0%,100%,.08);
+  --color-bg-primary: #08090a;
+  --color-bg-secondary: #1c1c1f;
+  --color-bg-tertiary: #232326;
+  --color-bg-quaternary: #28282c;
+  --color-bg-marketing: #010102;
+  --color-bg-translucent: hsla(0,0%,100%,.05);
+  --color-bg-quinary: #282828;
+  --color-border-primary: #23252a;
+  --color-border-secondary: #34343a;
+  --color-border-tertiary: #3e3e44;
+  --color-border-translucent: hsla(0,0%,100%,.05);
+  --color-text-primary: #f7f8f8;
+  --color-text-secondary: #d0d6e0;
+  --color-text-tertiary: #8a8f98;
+  --color-text-quaternary: #62666d;
+  --color-link-primary: #828fff;
+  --color-link-hover: #fff;
+  --color-brand-bg: #5e6ad2;
+  --color-brand-text: #fff;
+  --color-selection-text: var(--color-white);
+  --color-selection-bg: color-mix(in lch,var(--color-brand-bg),#000 10%);
+  --color-selection-dim: color-mix(in lch,var(--color-brand-bg),transparent 80%);
+  --color-overlay-dim-rgb: 255,255,255;
+  --color-overlay-primary: rgba(0,0,0,.9);
+  --color-alpha: 255;
+  --shadow-low: 0px 2px 4px rgba(0,0,0,.1);
+  --shadow-medium: 0px 4px 24px rgba(0,0,0,.2);
+  --shadow-high: 0px 7px 32px rgba(0,0,0,.35);
+  --shadow-stack-low: 0px 8px 2px 0px transparent,0px 5px 2px 0px rgba(0,0,0,.01),0px 3px 2px 0px rgba(0,0,0,.04),0px 1px 1px 0px rgba(0,0,0,.07),0px 0px 1px 0px rgba(0,0,0,.08);
+  --icon-grayscale-image-filter: grayscale(100%) brightness(400%);
+  --color-bg-level-0: #08090a;
+  --color-bg-level-1: #0f1011;
+  --color-bg-level-2: #141516;
+  --color-bg-level-3: #191a1b;
+  --color-bg-tint: #141516;
+  --color-line-primary: #37393a;
+  --color-line-secondary: #202122;
+  --color-line-tertiary: #18191a;
+  --color-line-quaternary: #141515;
+  --color-line-tint: #141516;
+  --color-fg-primary: #f7f8f8;
+  --color-fg-secondary: #d0d6e0;
+  --color-fg-tertiary: #8a8f98;
+  --color-fg-quaternary: #62666d;
+  --color-accent: #7170ff;
+  --color-accent-hover: #828fff;
+  --color-accent-tint: #18182f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-mode) {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --primary-color: #7986cb;
+    --card-background: #1e1e1e;
+  }
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}

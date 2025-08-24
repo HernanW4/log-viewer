@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LogViewerComponent } from './components/log-viewer/log-viewer.component';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,17 @@ import { LogViewerComponent } from './components/log-viewer/log-viewer.component
 })
 export class AppComponent {
   title = 'log-viewer-client';
+
+  constructor(private themeService: ThemeService){}
+
+  ngOnInit():void{
+    this.themeService.detectInitialTheme();
+    this.themeService.listenForThemeChanges();
+  }
+
+  toggleTheme():void {
+    this.themeService.toggleTheme();
+  }
+
 }
 
