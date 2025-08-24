@@ -1,16 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WebsocketService } from './websocket.service';
+import { AppComponent } from '../app.component';
+import { AppTestingModule } from '../testing/testing.module';
 
 describe('WebsocketService', () => {
-  let service: WebsocketService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(WebsocketService);
-  });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent, AppTestingModule],
+    }).compileComponents();
+});
 
   it('should be created', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const service = fixture.componentInstance;
     expect(service).toBeTruthy();
   });
 });

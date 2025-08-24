@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, timer } from 'rxjs';
 import { LogMessage } from '../models/log-message';
+import { SettingsService } from './settings.service';
 
 //Hardcoded websocket address 
-//TODO: Make the option to add from the UI
-const WEBSOCKET_URL = "ws://localhost:3000";
 
 const RECONNECT_INTERVAL_BASE = 2000; // 2 seconds
 const MAX_RECONNECT_INTERVAL = 30000; // Set the maximum reconnection interval to 30
@@ -17,17 +16,19 @@ export class WebsocketService {
   private messagesSubject = new Subject<LogMessage>();
   private reconnectAttempts = 0;
   private intentionalClose = false;
+  private websocketUrl: string;
 
   public messages$: Observable<LogMessage> = this.messagesSubject.asObservable();
 
 
-  constructor() { 
+  constructor(private settinsgService: SettingsService) { 
     this.connect_websocket();
+    this.websocketUrl = this.settinsgService.websocketUrl;
   }
 
   private connect_websocket():void{
-    console.log('Attempting to connect to WebSocket: %s', WEBSOCKET_URL);
-    this.socket = new WebSocket(WEBSOCKET_URL);
+    console.log('Attempting to connect to WebSocket: %s', this.websocketUrl);
+    this.socket = new WebSocket(this.websocketUrl);
 
     this.socket.onopen = () => {
       console.log('WebSocket connection successfull!.');
