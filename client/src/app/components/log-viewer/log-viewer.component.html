@@ -15,11 +15,32 @@
       </div>
     </div>
   </div>
-  <div class="log-display-area" #logContainer>
-    <div *ngFor="let log of filteredLogs" class="log-entry">
-      <span class="log-timestamp">{{ log.timestamp | date:'medium' }}</span>
-      <span class="log-level" [ngClass]="getLogLevelClass(log.level)">{{ log.level }}</span>
-      <span class="log-message">{{ log.message }}</span>
-    </div>
+  <div class="table-container" #logContainer>
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th class="level-col" [style.width.px]="colWidths.level" appResizable [minWidth]="colWidths.level">
+            Level
+            <div class = "resizer"></div>
+          </th>
+          <th class="timestamp-col" [style.width.px]="colWidths.timestamp" appResizable [minWidth]="colWidths.timestamp" >
+            Timestamp
+            <div class = "resizer"></div>
+          </th>
+          <th class="message-col">
+            Message
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of filteredLogs" class="log-entry">
+          <td class="level-cell">
+            <span class="log-level" [ngClass]="getLogLevelClass(log.level)">{{ log.level }}</span>
+          </td>
+          <td class="timestamp-cell">{{ log.timestamp | date:'medium' }}</td>
+          <td class="message-cell">{{ log.message }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

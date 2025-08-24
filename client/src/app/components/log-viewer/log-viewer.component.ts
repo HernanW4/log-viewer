@@ -1,23 +1,32 @@
 import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription} from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import { LogMessage } from '../../models/log-message';
+import { ResizableDirective } from '../../resizable.directive';
 
 @Component({
   selector: 'app-log-viewer',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ResizableDirective],
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.css']
 })
 export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('logContainer') private logContainer!: ElementRef;
 
+  colWidths = {
+    level: 100,
+    timestamp: 250,
+    //Not used because it just takes all the remaining space.
+    message: 100
+  };
+
 
   public allLogs: LogMessage[] = [];
   public filteredLogs: LogMessage[] = [];
+
   //TODO better naming? 
   public filterText = '';
   public isPaused = false;
@@ -26,6 +35,10 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   private logSubscription: Subscription | undefined;
 
   constructor(private websocketService: WebsocketService) { }
+
+  onColumnResize(newWidth: number, col: keyof typeof this.colWidths): void {
+    this.colWidths[col] = newWidth;
+  }
 
   ngOnInit(): void {
     //Subscribe to websocket messages 

@@ -64,41 +64,86 @@
   gap: 5px;
 }
 
-.log-display-area {
+
+.table-container {
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: auto; 
+}
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse; 
+  table-layout: fixed;
+}
+
+.log-table thead {
+  background-color: #333; 
+}
+
+.log-table th {
   padding: 10px;
+  text-align: left;
+  position: relative; 
+  white-space: nowrap;
+  top: 0;
+  background-color: #252526; 
+
+  box-sizing: border-box; 
 }
 
-.log-entry {
-  display: flex;
-  align-items: baseline;
-  padding: 4px 0;
-  border-bottom: 1px solid #2a2a2a;
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.15); 
 }
 
-.log-timestamp {
+/*
+.level-col { width: 5%; }
+.timestamp-col { width: 20%; }
+.message-col { width:75%; } 
+*/
+
+.log-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #2a2a2a; 
+  vertical-align: top; 
+}
+
+.timestamp-cell {
   color: #6a9955;
-  margin-right: 15px;
   white-space: nowrap;
 }
 
-.log-level {
-  margin-right: 15px;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 3px;
-  min-width: 60px;
-  text-align: center;
+.level-cell {
+  text-align: left;
+  padding-left: 10px;
 }
 
-.log-message {
+.message-cell {
   white-space: pre-wrap;
   word-break: break-all;
 }
 
-.log-level-info { background-color: #264f78; color: #9cdcfe; }
-.log-level-warn { background-color: #856d3a; color: #ffd700; }
-.log-level-error { background-color: #8b1a1a; color: #f44747; }
-.log-level-debug { background-color: #565656; color: #b0b0b0; }
-.log-level-unknown { background-color: #444; color: #ccc; }
+.log-level {
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.log-level::before{
+  content: "";
+  width: 6px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.log-level-info::before { background-color: #9cdcfe; }
+.log-level-warn::before { background-color: #ffd700; }
+.log-level-error::before { background-color: #f44747; }
+.log-level-debug::before { background-color: #b0b0b0; }
+.log-level-unknown::before { background-color: #ccc; }
