@@ -95,11 +95,10 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isPaused = !this.isPaused;
     if (this.isPaused){
       // TODO
-      //this.websocketService.pause():
+      this.websocketService.pause();
     }
     else{
-      //TODO 
-      //this.websocketService.resume();
+      this.websocketService.resume();
     }
   }
 

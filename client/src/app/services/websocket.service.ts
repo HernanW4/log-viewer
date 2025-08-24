@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
+import { filter, Observable, Subject, timer } from 'rxjs';
 import { LogMessage } from '../models/log-message';
 import { SettingsService } from './settings.service';
 
@@ -12,18 +12,26 @@ const MAX_RECONNECT_ATTEMPTS = 4; // Maximum allowed attempts to reconnect
   providedIn: 'root'
 })
 export class WebsocketService {
+
   private socket!: WebSocket;
   private messagesSubject = new Subject<LogMessage>();
   private reconnectAttempts = 0;
   private intentionalClose = false;
   private websocketUrl: string;
 
-  public messages$: Observable<LogMessage> = this.messagesSubject.asObservable();
+  private isPaused: boolean = false;
+
+  public messages$: Observable<LogMessage>;
 
 
   constructor(private settinsgService: SettingsService) { 
-    this.connect_websocket();
     this.websocketUrl = this.settinsgService.websocketUrl;
+
+    this.messages$ = this.messagesSubject.asObservable().pipe(
+      filter(() => !this.isPaused)
+    );
+
+    this.connect_websocket();
   }
 
   private connect_websocket():void{
@@ -36,7 +44,8 @@ export class WebsocketService {
     };
 
     this.socket.onmessage = (event) => {
-      const logMessage: LogMessage = JSON.parse(event.data);
+      const logMessage: LogMessage= JSON.parse(event.data);
+
       this.messagesSubject.next(logMessage);
     };
 
@@ -80,5 +89,15 @@ export class WebsocketService {
       this.reconnectAttempts = 0;
       this.socket.close();
     }
+  }
+
+  public pause(): void{
+    this.isPaused = true;
+    console.log("Log steam paused");
+  }
+
+  public resume(): void{
+    this.isPaused = false;
+    console.log("Log stream resumed");
   }
 }
