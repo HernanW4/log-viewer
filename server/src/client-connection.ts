@@ -6,6 +6,7 @@ export class ClientConnection{
     constructor(ws: WebSocket){
         this.ws = ws;
         console.log("New client has connected");
+        this.setupListeners();
     }
 
     private setupListeners(): void{

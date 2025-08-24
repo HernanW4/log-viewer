@@ -5,6 +5,7 @@
   background-color: var(--color-bg-secondary);
   color: var(--color-text-secondary);
   font-family: 'Consolas', 'Monaco', monospace;
+  scrollbar-width: none;
 }
 
 .toolbar {

@@ -1,14 +1,14 @@
 <div class="chart-container">
-  <ngx-charts-bar-vertical
-    [results]="logFrequencies"
+  <ngx-charts-bar-vertical-stacked
+    [results]="chartData"
     [scheme]="colorScheme"
     [xAxis]="showXAxis"
     [yAxis]="showYAxis"
-    [yScaleMax]="yScaleMax"
     [barPadding]="barPadding"
     [legend]="showLegend"
     [gradient]="gradient"
     [showXAxisLabel]="showXAxisLabel"
+    [yScaleMax]="yScaleMax"
     [showYAxisLabel]="showYAxisLabel">
-  </ngx-charts-bar-vertical>
+  </ngx-charts-bar-vertical-stacked>
 </div>

@@ -5,11 +5,11 @@
 }
 
 .chart-section{
-    flex: 0 0 25%;
+    flex: 0 0 35%;
     min-height: 200px;
 }
 
-.chart-section{
+.table-section{
     flex: 1;
     overflow: auto;
 }

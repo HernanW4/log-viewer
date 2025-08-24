@@ -91,6 +91,10 @@ export class WebsocketService {
     this.messagesSubject.next([]);
   }
 
+  public getCurrentMessages(): LogMessage[]{
+    return this.messagesSubject.getValue();
+  }
+
   //Bye bye socket
   public close(): void{
     if (this.socket){
