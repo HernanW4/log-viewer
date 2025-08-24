@@ -1,35 +1,32 @@
 import { Injectable } from '@angular/core';
-import { filter, Observable, Subject, timer } from 'rxjs';
+import { BehaviorSubject,  Observable,  timer } from 'rxjs';
 import { LogMessage } from '../models/log-message';
 import { SettingsService } from './settings.service';
-
-//Hardcoded websocket address 
 
 const RECONNECT_INTERVAL_BASE = 2000; // 2 seconds
 const MAX_RECONNECT_INTERVAL = 30000; // Set the maximum reconnection interval to 30
 const MAX_RECONNECT_ATTEMPTS = 4; // Maximum allowed attempts to reconnect
+const MAX_LOGS = 100;
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
 
   private socket!: WebSocket;
-  private messagesSubject = new Subject<LogMessage>();
+  private messagesSubject = new BehaviorSubject<LogMessage[]>([]);
   private reconnectAttempts = 0;
   private intentionalClose = false;
   private websocketUrl: string;
 
   private isPaused: boolean = false;
 
-  public messages$: Observable<LogMessage>;
+  public messages$: Observable<LogMessage[]>;
 
 
   constructor(private settinsgService: SettingsService) { 
     this.websocketUrl = this.settinsgService.websocketUrl;
 
-    this.messages$ = this.messagesSubject.asObservable().pipe(
-      filter(() => !this.isPaused)
-    );
+    this.messages$ = this.messagesSubject.asObservable();
 
     this.connect_websocket();
   }
@@ -44,9 +41,17 @@ export class WebsocketService {
     };
 
     this.socket.onmessage = (event) => {
-      const logMessage: LogMessage= JSON.parse(event.data);
+      if (this.isPaused) return;
 
-      this.messagesSubject.next(logMessage);
+      const serverMessage: LogMessage= JSON.parse(event.data);
+
+      const currentMessages = this.messagesSubject.getValue();
+      const updatedMessages = [serverMessage, ...currentMessages];
+
+      if (updatedMessages.length > MAX_LOGS){
+      updatedMessages.pop();
+      }
+      this.messagesSubject.next(updatedMessages);
     };
 
     this.socket.onclose = (event) => {
@@ -82,6 +87,10 @@ export class WebsocketService {
 
   }
 
+  public clearLogs(): void {
+    this.messagesSubject.next([]);
+  }
+
   //Bye bye socket
   public close(): void{
     if (this.socket){
@@ -100,4 +109,5 @@ export class WebsocketService {
     this.isPaused = false;
     console.log("Log stream resumed");
   }
+
 }

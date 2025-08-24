@@ -36,19 +36,11 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   constructor(private websocketService: WebsocketService) { }
 
-  onColumnResize(newWidth: number, col: keyof typeof this.colWidths): void {
-    this.colWidths[col] = newWidth;
-  }
-
   ngOnInit(): void {
     //Subscribe to websocket messages 
     this.logSubscription = this.websocketService.messages$.subscribe(
-      (log) => {
-        this.allLogs.unshift(log);
-
-        if (this.allLogs.length > 100) {
-          this.allLogs.pop();
-        }
+      (logs) => {
+        this.allLogs = logs;
         this.applyFilter();
       }
     );
@@ -103,8 +95,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   public clearLogs():void{
-    this.allLogs = [];
-    this.filteredLogs = [];
+    this.websocketService.clearLogs();
   }
 
   

@@ -107,6 +107,7 @@
 }
 
 .log-table td {
+  background-color: var(--color-bg-primary);
   padding: 8px 10px;
   border-bottom: 1px solid var(--color-border-primary); 
   vertical-align: top; 

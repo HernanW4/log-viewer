@@ -1,0 +1,15 @@
+.layout{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.chart-section{
+    flex: 0 0 25%;
+    min-height: 200px;
+}
+
+.chart-section{
+    flex: 1;
+    overflow: auto;
+}

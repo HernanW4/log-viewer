@@ -1,0 +1,9 @@
+.chart-container {
+  background-color: var(--color-bg-primary);
+  border-radius: 8px;
+  height: 100%;
+}
+
+:host ::ng-deep .ngx-charts text {
+  fill: #f1f1f1;
+}
