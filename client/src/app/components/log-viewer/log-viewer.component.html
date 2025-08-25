@@ -1,9 +1,46 @@
-<div class="log-container">
-  <h2>Live Log Stream</h2>
-  <div class="log-entry" *ngFor="let log of logs" [ngClass]="log.level.toLowerCase()">
-    <span class="timestamp">{{ log.timestamp | date:'medium' }}</span>
-    <span class="level">[{{ log.level }}]</span>
-    <span class="message">{{ log.message }}</span>
+<div class="log-viewer-container">
+  <div class="toolbar">
+    <div class="filter-container">
+      <input type="text" [(ngModel)]="filterText" (ngModelChange)="applyFilter()" placeholder="Filter by level or message..." class="filter-input"> 
+    </div>
+    <div class="controls">
+      <button (click)="togglePause()" class="control-button">
+        {{ isPaused ? 'Resume' : 'Pause' }}
+      </button>
+      <button (click)="stop()" class="control-button stop-button">Stop</button>
+      <button (click)="clearLogs()" class="control-button">Clear</button>
+      <div class="autoscroll-toggle">
+        <input type="checkbox" id="autoscroll" [(ngModel)]="autoScroll">
+        <label for="autoscroll">Auto-scroll</label>
+      </div>
+    </div>
   </div>
-  <p *ngIf="logs.length === 0">Waiting for logs...</p>
+  <div class="table-container" #logContainer>
+    <table class="log-table">
+      <thead>
+        <tr>
+          <th class="level-col" [style.width.px]="colWidths.level" appResizable [minWidth]="colWidths.level">
+            Level
+            <div class = "resizer"></div>
+          </th>
+          <th class="timestamp-col" [style.width.px]="colWidths.timestamp" appResizable [minWidth]="colWidths.timestamp" >
+            Timestamp
+            <div class = "resizer"></div>
+          </th>
+          <th class="message-col">
+            Message
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of filteredLogs" class="log-entry">
+          <td class="level-cell">
+            <span class="log-level" [ngClass]="getLogLevelClass(log.level)">{{ log.level }}</span>
+          </td>
+          <td class="timestamp-cell">{{ log.timestamp | date:'medium' }}</td>
+          <td class="message-cell">{{ log.message }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

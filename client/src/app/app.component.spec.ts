@@ -1,30 +1,93 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Component } from '@angular/core';
+
 import { AppComponent } from './app.component';
-import { AppTestingModule } from './testing/testing.module';
+
+import { ThemeService } from './services/theme.service';
+import { LogViewerComponent } from './components/log-viewer/log-viewer.component';
+import { LogChartComponent } from './components/log-chart/log-chart.component';
+
+@Component({ selector: 'app-log-chart', template: '', standalone: true })
+class MockLogChartComponent {}
+
+@Component({ selector: 'app-log-viewer', template: '', standalone: true })
+class MockLogViewerComponent {}
+
+
+const mockThemeService = jasmine.createSpyObj('ThemeService', [
+  'detectInitialTheme',
+  'listenForThemeChanges',
+  'toggleTheme',
+]);
+
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, AppTestingModule],
-    }).compileComponents();
+      imports: [AppComponent],
+    })
+    .overrideComponent(AppComponent, {
+      remove: { imports: [LogViewerComponent, LogChartComponent] },
+      add: { imports: [MockLogViewerComponent, MockLogChartComponent] },
+    })
+    .configureTestingModule({
+      providers: [
+        { provide: ThemeService, useValue: mockThemeService }
+      ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have the 'log-viewer-client' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('log-viewer-client');
+
+  it('should render the main layout div', () => {
+    const layoutElement = fixture.debugElement.query(By.css('.layout'));
+    expect(layoutElement).toBeTruthy();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('log-viewer-client');
+  it('should render the chart section', () => {
+    const chartSection = fixture.debugElement.query(By.css('.chart-section'));
+    expect(chartSection).toBeTruthy();
+  });
+
+  it('should render the table section', () => {
+    const tableSection = fixture.debugElement.query(By.css('.table-section'));
+    expect(tableSection).toBeTruthy();
+  });
+
+  it('should render the app-log-chart component inside the chart section', () => {
+    const chartComponent = fixture.debugElement.query(By.css('.chart-section app-log-chart'));
+    expect(chartComponent).toBeTruthy();
+  });
+
+  it('should render the app-log-viewer component inside the table section', () => {
+    const viewerComponent = fixture.debugElement.query(By.css('.table-section app-log-viewer'));
+    expect(viewerComponent).toBeTruthy();
+  });
+
+
+
+  it('should call ThemeService methods on initialization', () => {
+    expect(mockThemeService.detectInitialTheme).toHaveBeenCalled();
+    expect(mockThemeService.listenForThemeChanges).toHaveBeenCalled();
+  });
+
+  it('should call ThemeService.toggleTheme when toggleTheme() is called', () => {
+    component.toggleTheme();
+
+    expect(mockThemeService.toggleTheme).toHaveBeenCalled();
   });
 });

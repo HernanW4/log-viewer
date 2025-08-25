@@ -11,3 +11,7 @@ export interface LogMessage{
     level: LogLevel;
     message: string;
 }
+
+export function getLogLevels(): LogLevel[] {
+  return Object.values(LogLevel);
+}
