@@ -1,7 +1,7 @@
 .log-viewer-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background-color: var(--color-bg-secondary);
   color: var(--color-text-secondary);
   font-family: 'Consolas', 'Monaco', monospace;
@@ -25,7 +25,6 @@
 .filter-input {
   width: 100%;
   padding: 8px;
-  /* Use quaternary background and tertiary text */
   background-color: var(--color-bg-quaternary);
   border: 1px solid var(--color-border-secondary);
   color: var(--color-text-primary);
@@ -40,9 +39,8 @@
 
 .control-button {
   padding: 8px 12px;
-  /* Use the theme's accent color */
   background-color: var(--color-accent);
-  color: var(--color-text-primary); /* Or a specific --color-brand-text if you have one */
+  color: var(--color-text-primary); 
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -53,8 +51,6 @@
   background-color: var(--color-accent-hover);
 }
 
-/* NOTE: Your theme does not have a variable for a "danger" or "stop" color.
-   Consider adding --color-status-error to your theme for full consistency. */
 .stop-button {
   background-color: #d44;
 }
@@ -73,6 +69,7 @@
 .table-container {
   flex-grow: 1;
   overflow-y: auto; 
+  min-height: 0;
 }
 
 .log-table {
