@@ -27,7 +27,7 @@ export class LogChartComponent implements OnInit, OnDestroy {
     name: 'ColorScheme',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#b0b0b0', '#66DE93', '#FFC400', '#F7685B']
+    domain: [ "var(--color-debug)", 'var(--color-info)', 'var(--color-warn)', 'var(--color-error)']
   };
   showXAxis = true;
   showYAxis = true;

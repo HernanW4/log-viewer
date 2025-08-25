@@ -139,8 +139,8 @@
   margin-right: 8px;
 }
 
-.log-level-info::before { background-color: #9cdcfe; }
-.log-level-warn::before { background-color: #ffd700; }
-.log-level-error::before { background-color: #f44747; }
-.log-level-debug::before { background-color: #b0b0b0; }
-.log-level-unknown::before { background-color: #ccc; }
+.log-level-info::before { background-color: var(--color-info); }
+.log-level-warn::before { background-color: var(--color-warn); }
+.log-level-error::before { background-color: var(--color-error); }
+.log-level-debug::before { background-color: var(--color-debug); }
+.log-level-unknown::before { background-color: var(--color-unknwon); }

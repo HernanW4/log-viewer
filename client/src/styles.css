@@ -12,10 +12,15 @@
   --color-border-secondary: #d0d1d2;
   --color-accent: #3f51b5;
   --color-accent-hover: #314194;
-}
 
+  --color-unknown: #ffff;
+  --color-info: #9cdcfe;
+  --color-warn: #ffd700;
+  --color-error: #f44747;
+  --color-debug: #b0b0b0;
+  }
 .dark-mode{
-    --header-bg: hsla(0,0%,4%,.8);
+  --header-bg: hsla(0,0%,4%,.8);
   --header-border: hsla(0,0%,100%,.08);
   --color-bg-primary: #08090a;
   --color-bg-secondary: #1c1c1f;
@@ -79,5 +84,4 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
-  overflow: hidden;
 }
