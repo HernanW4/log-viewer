@@ -1,17 +1,18 @@
 <div class="app-container">
     <div class="toolbar">
         <app-log-toolbar [isPaused]="isPaused" [autoScroll]="autoScroll" [filterText]="filterText"
-            (pauseToggled)="onPauseToggled()" (clearClicked)="onClear()"
-            (autoScrollChanged)="onAutoScrollChanged($event)" (filterChanged)="onFilterChanged($event)">
+            [isChartVisible]="isChartVisible" [isDarkMode]="themeService.isDarkMode" (pauseToggled)="onPauseToggled()" (clearClicked)="onClear()"
+            (autoScrollChanged)="onAutoScrollChanged($event)" (filterChanged)="onFilterChanged($event)"
+            (chartVisibilityToggled)="onChartVisibilityToggled()" (themeToggled)="toggleTheme()">
         </app-log-toolbar>
     </div>
 
-    <div class="layout">
+    <div class="layout" [class.chart-collapsed]="!isChartVisible">
         <div class="chart-section">
             <app-log-chart></app-log-chart>
         </div>
         <div class="table-section">
-            <app-log-viewer #logViewer [autoScroll]="autoScroll"></app-log-viewer>
+            <app-log-viewer #logViewer [autoScroll]="autoScroll" [filterText]="filterText"></app-log-viewer>
         </div>
     </div>
 </div>

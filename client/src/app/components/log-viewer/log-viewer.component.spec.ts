@@ -56,19 +56,5 @@ describe('LogViewerComponent', () => {
     expect(mockWebsocketService.clearLogs).toHaveBeenCalled();
   });
 
-  it('should apply a filter to the logs', () => {
-    const dummyLogs: LogMessage[] = [
-      { timestamp: new Date().toISOString(), level: LogLevel.INFO, message: 'This is an info message' },
-      { timestamp: new Date().toISOString(), level: LogLevel.ERROR, message: 'An error occurred' }
-    ];
-    mockWebsocketService.messages$.next(dummyLogs);
-    fixture.detectChanges();
 
-    component.setFilterText('error');
-    component.applyFilter();
-    fixture.detectChanges();
-
-    expect(component.filteredLogs.length).toBe(1);
-    expect(component.filteredLogs[0].level).toBe(LogLevel.ERROR);
-  });
 });

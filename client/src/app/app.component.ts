@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ViewChild } from '@angular/core'; // Removed AfterViewInit as it's unused
 import { LogViewerComponent } from './components/log-viewer/log-viewer.component';
 import { ThemeService } from './services/theme.service';
 import { LogChartComponent } from "./components/log-chart/log-chart.component";
@@ -11,34 +11,31 @@ import { LogToolbarComponent } from './components/log-toolbar/log-toolbar.compon
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent  implements AfterViewChecked{ 
   title = 'log-viewer-client';
 
   @ViewChild('logViewer') logViewer!: LogViewerComponent;
 
-  constructor(private themeService: ThemeService){}
+  constructor(public themeService: ThemeService) {}
 
   public isPaused: boolean = false;
   public autoScroll: boolean = true;
   public filterText: string = '';
+  public isChartVisible: boolean = true; 
 
-  ngOnInit():void{
+  ngOnInit(): void {
     this.themeService.detectInitialTheme();
     this.themeService.listenForThemeChanges();
   }
 
-  ngAfterViewInit(): void {
-      //console.log("LogViewerComponent is now available: ", this.logViewer);
-  }
+  ngAfterViewChecked(): void {}
 
-  toggleTheme():void {
+  toggleTheme(): void {
     this.themeService.toggleTheme();
   }
 
-  
   onFilterChanged(newFilterText: string): void {
     this.filterText = newFilterText;
-    this.logViewer.setFilterText(newFilterText);
   }
   
   onAutoScrollChanged(newAutoScroll: boolean): void {
@@ -46,12 +43,15 @@ export class AppComponent implements AfterViewInit{
   }
 
   onPauseToggled(): void {
-    console.log("This is where I paused");
     this.isPaused = !this.isPaused;
     this.logViewer.togglePause();
   }
 
   onClear(): void {
     this.logViewer.clearLogs();
+  }
+
+  onChartVisibilityToggled(): void {
+    this.isChartVisible = !this.isChartVisible;
   }
 }

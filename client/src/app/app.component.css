@@ -1,30 +1,44 @@
-.app-container{
+.app-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
+
+    max-width: 70%;
+    width: 100;
+    margin: 0 auto;
+    border: 1px solid var(--color-border-secondary)
 }
 
-.toolbar{
+.toolbar {
     flex-shrink: 0;
 }
 
-.layout{
+.layout {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
 }
 
-.chart-section{
+.chart-section {
+
     flex: 0 0 35%;
-    min-height: 200px;
+    max-height: 35vh; 
+    overflow: hidden;
     display: flex;
+    transition: max-height 0.4s ease-in-out, flex-basis 0.4s ease-in-out;
 }
 
-.table-section{
+.table-section {
     flex: 1;
     overflow: auto;
     min-height: 0;
     display: flex;
+}
+
+
+.layout.chart-collapsed .chart-section {
+    max-height: 0;
+    flex-basis: 0;
 }

@@ -1,3 +1,4 @@
+/* MODIFIED: .log-viewer-container is now the primary scroll container */
 .log-viewer-container {
   display: flex;
   flex-direction: column;
@@ -5,32 +6,32 @@
   background-color: var(--color-bg-secondary);
   color: var(--color-text-secondary);
   font-family: 'Consolas', 'Monaco', monospace;
-  scrollbar-width: none;
-}
-.table-container {
-  flex-grow: 1;
   overflow-y: auto; 
-  min-height: 0;
+  position: relative; /* Needed for empty state positioning */
 }
+
 
 .log-table {
   width: 100%;
   border-collapse: collapse; 
+  border-bottom: 1-px solid var(--color-bg-secondary);
   table-layout: fixed;
 }
 
-.log-table thead {
-  background-color: var(--color-bg-tertiary);
+.log-table td{
+  background-color: var(--color-bg-primary);
+  padding: 8px 10px;
+  border: 2px solid var(--color-border-secondary); 
+  vertical-align: top;
 }
 
 .log-table th {
   padding: 10px;
   text-align: left;
-  position: relative; 
-  white-space: nowrap;
+  position: sticky; /* Sticky header for better UX on scroll */
   top: 0;
-  /* Header cells background */
   background-color: var(--color-bg-tertiary);
+  z-index: 1; /* Ensures header stays above content */
   box-sizing: border-box; 
 }
 
@@ -38,50 +39,58 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 6px;
+  width: 1px;
   height: 100%;
   cursor: col-resize;
   user-select: none;
-  background-color: var(--color-border-translucent, rgba(0, 0, 0, 0.1)); 
+  background-color: var(--color-border-secondary);
+  transition: background-color 0.2s;
 }
 
-.log-table td {
-  background-color: var(--color-bg-primary);
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--color-border-primary); 
-  vertical-align: top; 
+.resizer:hover {
+  background-color: var(--color-accent);
 }
 
 .timestamp-cell {
-  color: #6a9955;
+  color: var(--color-text-tertiary);
   white-space: nowrap;
-}
-
-.level-cell {
-  text-align: left;
-  padding-left: 10px;
-}
-
-.message-cell {
-  white-space: pre-wrap;
-  word-break: break-all;
 }
 
 .log-level {
   display: inline-flex;
   align-items: center;
+  gap: 8px; /* Space between icon and text */
   font-weight: bold;
 }
 
-.log-level::before{
-  content: "";
-  width: 6px;
+.log-icon {
+  width: 16px;
   height: 16px;
-  margin-right: 8px;
+  display: inline-block;
+  background-color: currentColor; /* Default color */
 }
 
-.log-level-info::before { background-color: var(--color-info); }
-.log-level-warn::before { background-color: var(--color-warn); }
-.log-level-error::before { background-color: var(--color-error); }
-.log-level-debug::before { background-color: var(--color-debug); }
-.log-level-unknown::before { background-color: var(--color-unknwon); }
+.log-level-info { color: var(--color-info); }
+.log-level-warn { color: var(--color-warn); }
+.log-level-error { color: var(--color-error); }
+.log-level-debug { color: var(--color-debug); }
+.log-level-unknown { color: var(--color-text-tertiary); }
+
+
+@keyframes flash-new-row {
+  from { background-color: var(--color-accent-hover); }
+  to { background-color: var(--color-bg-primary); }
+}
+
+.log-entry.new {
+  animation: flash-new-row 1s ease-out;
+}
+
+.empty-state-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
