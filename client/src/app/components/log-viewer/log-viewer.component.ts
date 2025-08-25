@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription} from 'rxjs';
@@ -13,7 +13,7 @@ import { ResizableDirective } from '../../resizable.directive';
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.css']
 })
-export class LogViewerComponent implements OnInit, OnDestroy {
+export class LogViewerComponent implements OnInit, OnDestroy , AfterViewChecked{
   @ViewChild('logContainer') private logContainer!: ElementRef;
 
   colWidths = {
@@ -27,18 +27,20 @@ export class LogViewerComponent implements OnInit, OnDestroy {
   public allLogs: LogMessage[] = [];
   public filteredLogs: LogMessage[] = [];
 
+  @Input() autoScroll: boolean = true;
   //TODO better naming? 
   @Input()
   setFilterText(newFilter: string){
-    this._filterText =  newFilter;
+    this.filterText =  newFilter;
     this.applyFilter()
   }
 
-  private _filterText: string = '';
 
   public isPaused = false;
 
   private logSubscription: Subscription | undefined;
+  private filterText: string = '';
+  private shouldScroll = false;
 
   constructor(private websocketService: WebsocketService) { }
 
@@ -48,6 +50,8 @@ export class LogViewerComponent implements OnInit, OnDestroy {
       (logs) => {
         this.allLogs = logs;
         this.applyFilter();
+
+        this.shouldScroll = true;
       }
     );
   }
@@ -57,6 +61,13 @@ export class LogViewerComponent implements OnInit, OnDestroy {
       this.logSubscription.unsubscribe();
     }
     this.websocketService.close();
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.shouldScroll && this.autoScroll){
+      this.scrollToBottom();
+      this.shouldScroll = false;
+    }
   }
 
   private scrollToBottom(): void{
@@ -71,10 +82,10 @@ export class LogViewerComponent implements OnInit, OnDestroy {
   //Some simple filtering 
   // TODO add more robust filtering logic
   public applyFilter(): void {
-    if (!this._filterText) {
+    if (!this.filterText) {
       this.filteredLogs = [...this.allLogs];
     } else {
-      const filter = this._filterText.toLowerCase();
+      const filter = this.filterText.toLowerCase();
       this.filteredLogs = this.allLogs.filter(log =>
         log.level.toLowerCase().includes(filter) ||
         log.message.toLowerCase().includes(filter)
