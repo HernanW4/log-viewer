@@ -38,6 +38,7 @@ export class AppComponent implements AfterViewInit{
   
   onFilterChanged(newFilterText: string): void {
     this.filterText = newFilterText;
+    this.logViewer.setFilterText(newFilterText);
   }
   
   onAutoScrollChanged(newAutoScroll: boolean): void {
@@ -48,10 +49,6 @@ export class AppComponent implements AfterViewInit{
     console.log("This is where I paused");
     this.isPaused = !this.isPaused;
     this.logViewer.togglePause();
-  }
-
-  onStop(): void {
-    this.logViewer.stop();
   }
 
   onClear(): void {
