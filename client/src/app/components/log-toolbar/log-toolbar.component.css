@@ -41,14 +41,6 @@
   background-color: var(--color-accent-hover);
 }
 
-.stop-button {
-  background-color: #d44;
-}
-
-.stop-button:hover {
-  background-color: #b43;
-}
-
 .autoscroll-toggle {
   display: flex;
   align-items: center;

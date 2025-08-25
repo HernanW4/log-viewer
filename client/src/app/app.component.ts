@@ -28,7 +28,7 @@ export class AppComponent implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-      console.log("LogViewerComponent is now available: ", this.logViewer);
+      //console.log("LogViewerComponent is now available: ", this.logViewer);
   }
 
   toggleTheme():void {
