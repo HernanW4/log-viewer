@@ -1,18 +1,38 @@
-.chart-container {
+:host {
+  display: block; 
+  height: 100%;   
+  width: 100%;
+}
+
+/* RENAMED: from .chart-container to .chart-wrapper for clarity */
+.chart-wrapper {
   background-color: var(--color-bg-primary);
   border-radius: 8px;
-  height: 300px;
+  height: 100%;
   width: 100%;
-  margin: auto;
-  overflow:hidden;
+  overflow: hidden;
+
+  /* NEW: Animation for a smooth appearance */
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
 }
 
-:host ::ng-deep .ngx-charts {
-  display: block;
-  height: 100% !important;
-  width: 100% !important;
-}
+/* 
+  REMOVED: The deprecated ::ng-deep selectors.
+  The styling for chart text should be placed in the global 'styles.css'
+  to avoid breaking encapsulation. Add the following to styles.css:
 
-:host ::ng-deep .ngx-charts text {
-  fill: #f1f1f1;
+  .ngx-charts text {
+    fill: var(--color-text-primary);
+  }
+*/
+
+/* NEW: Styling for the empty state message */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: var(--color-text-tertiary);
+  font-style: italic;
 }

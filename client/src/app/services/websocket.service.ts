@@ -44,13 +44,14 @@ export class WebsocketService {
       if (this.isPaused) return;
 
       const serverMessage: LogMessage= JSON.parse(event.data);
-
       const currentMessages = this.messagesSubject.getValue();
-      const updatedMessages = [serverMessage, ...currentMessages];
 
-      if (updatedMessages.length > MAX_LOGS){
-      updatedMessages.pop();
+      const updatedMessages = [...currentMessages, serverMessage];
+
+      if (updatedMessages.length > MAX_LOGS) {
+        updatedMessages.shift();
       }
+
       this.messagesSubject.next(updatedMessages);
     };
 
@@ -87,12 +88,8 @@ export class WebsocketService {
 
   }
 
-  public clearLogs(): void {
-    this.messagesSubject.next([]);
-  }
-
   public getCurrentMessages(): LogMessage[]{
-    return this.messagesSubject.getValue();
+    return [...this.messagesSubject.getValue()];
   }
 
   //Bye bye socket

@@ -1,0 +1,33 @@
+<div class="toolbar">
+    <div class="controls left-controls">
+        <button (click)="themeToggled.emit()" class="control-button icon-button"
+            [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+            <span class="icon">{{ isDarkMode ? '☀️' : '🌚' }}</span>
+        </button>
+        <button (click)="chartVisibilityToggled.emit()" class="control-button icon-button"
+            [class.active]="isChartVisible" title="Toggle Chart View">
+            <span class="icon">◯</span> Chart
+        </button>
+    <button (click)="isFilterVisible = !isFilterVisible" class="control-button icon-button"
+            [class.active]="isFilterVisible"
+            title="Toggle Filter">
+      <span class="icon">▼</span> Filter
+    </button>
+
+    <div class="filter-container" *ngIf="isFilterVisible">
+      <input 
+        type="text" 
+        [ngModel]="filterText" 
+        (ngModelChange)="filterChanged.emit($event)" 
+        placeholder="Filter by level or message..." 
+        class="filter-input">
+    </div>
+  </div>
+
+  <div class="controls right-controls">
+    <button (click)="pauseToggled.emit()" class="control-button" [class.active]="isPaused">
+      {{ isPaused ? 'Resume' : 'Pause' }}
+    </button>
+    <button (click)="clearClicked.emit()" class="control-button">Clear</button>
+  </div>
+</div>

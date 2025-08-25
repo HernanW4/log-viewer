@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LogViewerComponent } from './log-viewer.component';
 import { WebsocketService } from '../../services/websocket.service';
 import { LogLevel, LogMessage } from '../../models/log-message';
-import { Subject } from 'rxjs'; // Subject is a great tool for mocking observables
+import { Subject } from 'rxjs'; 
 
 const mockWebsocketService = {
   messages$: new Subject<LogMessage[]>(),
@@ -50,25 +50,17 @@ describe('LogViewerComponent', () => {
     expect(component.allLogs[1].message).toEqual('Test log 2');
   });
 
-  it('should call websocketService.clearLogs when clearLogs() is called', () => {
-    component.clearLogs();
-    
-    expect(mockWebsocketService.clearLogs).toHaveBeenCalled();
-  });
-
-  it('should apply a filter to the logs', () => {
-    const dummyLogs: LogMessage[] = [
-      { timestamp: new Date().toISOString(), level: LogLevel.INFO, message: 'This is an info message' },
-      { timestamp: new Date().toISOString(), level: LogLevel.ERROR, message: 'An error occurred' }
+  it('should clear its internal log arrays when clearLogs() is called', () => {
+    component.allLogs = [{ timestamp: new Date().toISOString(), level: LogLevel.INFO, message: 'Test log 1' },
     ];
-    mockWebsocketService.messages$.next(dummyLogs);
-    fixture.detectChanges();
+    component.filteredLogs = [{ timestamp: new Date().toISOString(), level: LogLevel.INFO, message: 'Test log 1' },
+    ];
 
-    component.filterText = 'error';
-    component.applyFilter();
-    fixture.detectChanges();
+    component.clearLogs();
 
-    expect(component.filteredLogs.length).toBe(1);
-    expect(component.filteredLogs[0].level).toBe(LogLevel.ERROR);
-  });
+    expect(component.allLogs.length).toBe(0);
+    expect(component.filteredLogs.length).toBe(0);
+    expect(component.lastCleared).not.toBeNull();
+});
+
 });

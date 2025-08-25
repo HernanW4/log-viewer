@@ -1,7 +1,8 @@
-import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+// OnChanges, SimpleChanges are added; AfterViewChecked is removed.
+import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import { LogMessage } from '../../models/log-message';
 import { ResizableDirective } from '../../resizable.directive';
@@ -13,108 +14,107 @@ import { ResizableDirective } from '../../resizable.directive';
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.css']
 })
-export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
+// OnChanges is implemented, AfterViewChecked is removed.
+export class LogViewerComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('logContainer') private logContainer!: ElementRef;
-
+  
   colWidths = {
     level: 100,
     timestamp: 250,
-    //Not used because it just takes all the remaining space.
     message: 100
   };
-
 
   public allLogs: LogMessage[] = [];
   public filteredLogs: LogMessage[] = [];
 
-  //TODO better naming? 
-  public filterText = '';
-  public isPaused = false;
-  public autoScroll = true;
+  @Input() filterText: string = ''; 
 
-  private logSubscription: Subscription | undefined;
+  public isPaused = false;
+
+  private _logSubscription: Subscription | undefined;
+  private _lastCleared: Date | null = null;
+
+  public get lastCleared(){
+    return this._lastCleared;
+  }
 
   constructor(private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
-    //Subscribe to websocket messages 
-    this.logSubscription = this.websocketService.messages$.subscribe(
-      (logs) => {
-        this.allLogs = logs;
+    this._logSubscription = this.websocketService.messages$.subscribe(
+      (logsFromService) => {
+        if (this.isPaused) return;
+
+        const container = this.logContainer.nativeElement;
+        const isScrolledToBottom = container.scrollHeight - container.clientHeight <= container.scrollTop + 1;
+
+        let logsForView = logsFromService;
+        if (this.lastCleared) {
+          logsForView = logsFromService.filter(log => new Date(log.timestamp) > this.lastCleared!);
+        }
+        
+        this.allLogs = logsForView;
         this.applyFilter();
-      }
-    );
+
+        if (isScrolledToBottom) {
+          setTimeout(() => this.scrollToBottom(), 0);
+        }
+      });
+  }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filterText']) {
+      this.applyFilter();
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.logSubscription) {
-      this.logSubscription.unsubscribe();
+    if (this._logSubscription) {
+      this._logSubscription.unsubscribe();
     }
     this.websocketService.close();
   }
 
-  ngAfterViewChecked(): void {
-    if (this.autoScroll) {
-      this.scrollToBottom();
+
+  private scrollToBottom(): void {
+    if (this.logContainer) {
+      this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
     }
   }
 
-  private scrollToBottom(): void{
-    try{
-      this.logContainer.nativeElement.scrollToBottom = this.logContainer.nativeElement.scrollHeight;
-    }
-    catch(err){
-      console.log(err);
-    }
-  }
-
-  //Some simple filtering 
-  // TODO add more robust filtering logic
   public applyFilter(): void {
-    if(this.filterText){
-      const filterLower = this.filterText.toLowerCase();
-      this.filteredLogs = this.allLogs.filter(log => 
-        log.level.toLowerCase().includes(filterLower) ||
-        log.message.toLowerCase().includes(filterLower)
-      );
-    }else{
+    if (!this.filterText) {
       this.filteredLogs = [...this.allLogs];
+    } else {
+      const filter = this.filterText.toLowerCase();
+      this.filteredLogs = this.allLogs.filter(log =>
+        log.level.toLowerCase().includes(filter) ||
+        log.message.toLowerCase().includes(filter)
+      );
     }
   }
 
-  //TODO Finish implementation
-  public togglePause(): void{
+  public togglePause(): void {
     this.isPaused = !this.isPaused;
-    if (this.isPaused){
-      // TODO
+    if (this.isPaused) {
       this.websocketService.pause();
-    }
-    else{
+    } else {
       this.websocketService.resume();
     }
   }
 
-  public clearLogs():void{
-    this.websocketService.clearLogs();
+  public clearLogs(): void {
+    this.allLogs = [];
+    this.filteredLogs = [];
+    this._lastCleared = new Date();
   }
 
-  
-  //TODO do I really need this?
-  public stop(): void {
-    this.websocketService.close();
-    if (this.logSubscription) {
-      this.logSubscription.unsubscribe();
-    }
-  }
 
   public getLogLevelClass(level: string): string {
-    switch (level.toLowerCase()) {
-      case 'info': return 'log-level-info';
-      case 'warn': return 'log-level-warn';
-      case 'error': return 'log-level-error';
-      case 'debug': return 'log-level-debug';
-      default: return 'log-level-unknown';
-    }
+    return `log-level-${level.toLowerCase()}`;
   }
 
+  public trackByLog(index: number, log: LogMessage): string {
+    return log.timestamp + log.message; 
+  }
 }
