@@ -27,7 +27,6 @@ export class LogViewerComponent implements OnInit, OnDestroy, OnChanges {
   public allLogs: LogMessage[] = [];
   public filteredLogs: LogMessage[] = [];
 
-  @Input() autoScroll: boolean = true;
   @Input() filterText: string = ''; 
 
   public isPaused = false;
@@ -57,7 +56,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, OnChanges {
         this.allLogs = logsForView;
         this.applyFilter();
 
-        if (isScrolledToBottom && this.autoScroll) {
+        if (isScrolledToBottom) {
           setTimeout(() => this.scrollToBottom(), 0);
         }
       });

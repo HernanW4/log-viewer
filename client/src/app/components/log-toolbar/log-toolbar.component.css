@@ -58,9 +58,3 @@
 .icon-button .icon {
   margin-right: 6px;
 }
-
-.autoscroll-toggle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}

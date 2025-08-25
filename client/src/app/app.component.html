@@ -1,9 +1,9 @@
 <div class="app-container">
     <div class="toolbar">
-        <app-log-toolbar [isPaused]="isPaused" [autoScroll]="autoScroll" [filterText]="filterText"
-            [isChartVisible]="isChartVisible" [isDarkMode]="themeService.isDarkMode" (pauseToggled)="onPauseToggled()" (clearClicked)="onClear()"
-            (autoScrollChanged)="onAutoScrollChanged($event)" (filterChanged)="onFilterChanged($event)"
-            (chartVisibilityToggled)="onChartVisibilityToggled()" (themeToggled)="toggleTheme()">
+        <app-log-toolbar [isPaused]="isPaused" [filterText]="filterText" [isChartVisible]="isChartVisible"
+            [isDarkMode]="themeService.isDarkMode" (pauseToggled)="onPauseToggled()" (clearClicked)="onClear()"
+            (filterChanged)="onFilterChanged($event)" (chartVisibilityToggled)="onChartVisibilityToggled()"
+            (themeToggled)="toggleTheme()">
         </app-log-toolbar>
     </div>
 
@@ -12,7 +12,7 @@
             <app-log-chart></app-log-chart>
         </div>
         <div class="table-section">
-            <app-log-viewer #logViewer [autoScroll]="autoScroll" [filterText]="filterText"></app-log-viewer>
+            <app-log-viewer #logViewer [filterText]="filterText"></app-log-viewer>
         </div>
     </div>
 </div>

@@ -29,13 +29,5 @@
       {{ isPaused ? 'Resume' : 'Pause' }}
     </button>
     <button (click)="clearClicked.emit()" class="control-button">Clear</button>
-    <div class="autoscroll-toggle">
-      <input 
-        type="checkbox" 
-        id="autoscroll" 
-        [ngModel]="autoScroll"
-        (ngModelChange)="autoScrollChanged.emit($event)">
-      <label for="autoscroll">Auto-scroll</label>
-    </div>
   </div>
 </div>

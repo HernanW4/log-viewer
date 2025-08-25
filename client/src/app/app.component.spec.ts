@@ -12,7 +12,6 @@ import { LogChartComponent } from './components/log-chart/log-chart.component';
 @Component({ selector: 'app-log-toolbar', template: '', standalone: true })
 class MockLogToolbarComponent {
   @Input() isPaused: boolean | undefined;
-  @Input() autoScroll: boolean | undefined;
   @Input() filterText: string | undefined;
   @Input() isChartVisible: boolean | undefined;
   @Input() isDarkMode: boolean | undefined;
@@ -25,7 +24,6 @@ class MockLogChartComponent {
 
 @Component({ selector: 'app-log-viewer', template: '', standalone: true })
 class MockLogViewerComponent {
-  @Input() autoScroll: boolean | undefined;
   @Input() filterText: string | undefined;
   setFilterText() {}
   togglePause() {}
