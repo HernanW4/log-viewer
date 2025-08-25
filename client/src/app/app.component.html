@@ -1,8 +1,17 @@
-<div class="layout">
-    <div class="chart-section">
-        <app-log-chart></app-log-chart>
+<div class="app-container">
+    <div class="toolbar">
+        <app-log-toolbar [isPaused]="isPaused" [autoScroll]="autoScroll" [filterText]="filterText"
+            (pauseToggled)="onPauseToggled()" (stopClicked)="onStop()" (clearClicked)="onClear()"
+            (autoScrollChanged)="onAutoScrollChanged($event)" (filterChanged)="onFilterChanged($event)">
+        </app-log-toolbar>
     </div>
-    <div class="table-section">
-        <app-log-viewer></app-log-viewer>
+
+    <div class="layout">
+        <div class="chart-section">
+            <app-log-chart></app-log-chart>
+        </div>
+        <div class="table-section">
+            <app-log-viewer #logViewer></app-log-viewer>
+        </div>
     </div>
 </div>

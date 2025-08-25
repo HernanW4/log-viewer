@@ -1,15 +1,30 @@
-.layout{
+.app-container{
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
+}
+
+.toolbar{
+    flex-shrink: 0;
+}
+
+.layout{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
 .chart-section{
     flex: 0 0 35%;
     min-height: 200px;
+    display: flex;
 }
 
 .table-section{
     flex: 1;
     overflow: auto;
+    min-height: 0;
+    display: flex;
 }

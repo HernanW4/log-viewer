@@ -1,0 +1,56 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--color-bg-tertiary);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.filter-container {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 8px;
+  background-color: var(--color-bg-quaternary);
+  border: 1px solid var(--color-border-secondary);
+  color: var(--color-text-primary);
+  border-radius: 4px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-button {
+  padding: 8px 12px;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary); 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.stop-button {
+  background-color: #d44;
+}
+
+.stop-button:hover {
+  background-color: #b43;
+}
+
+.autoscroll-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

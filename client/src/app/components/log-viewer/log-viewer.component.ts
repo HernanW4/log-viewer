@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription} from 'rxjs';
@@ -13,7 +13,7 @@ import { ResizableDirective } from '../../resizable.directive';
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.css']
 })
-export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class LogViewerComponent implements OnInit, OnDestroy {
   @ViewChild('logContainer') private logContainer!: ElementRef;
 
   colWidths = {
@@ -28,9 +28,15 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   public filteredLogs: LogMessage[] = [];
 
   //TODO better naming? 
-  public filterText = '';
+  @Input()
+  setFilterText(newFilter: string){
+    this._filterText =  newFilter;
+    this.applyFilter()
+  }
+
+  private _filterText: string = '';
+
   public isPaused = false;
-  public autoScroll = true;
 
   private logSubscription: Subscription | undefined;
 
@@ -53,15 +59,9 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.websocketService.close();
   }
 
-  ngAfterViewChecked(): void {
-    if (this.autoScroll) {
-      this.scrollToBottom();
-    }
-  }
-
   private scrollToBottom(): void{
     try{
-      this.logContainer.nativeElement.scrollToBottom = this.logContainer.nativeElement.scrollHeight;
+      this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
     }
     catch(err){
       console.log(err);
@@ -71,19 +71,20 @@ export class LogViewerComponent implements OnInit, OnDestroy, AfterViewChecked {
   //Some simple filtering 
   // TODO add more robust filtering logic
   public applyFilter(): void {
-    if(this.filterText){
-      const filterLower = this.filterText.toLowerCase();
-      this.filteredLogs = this.allLogs.filter(log => 
-        log.level.toLowerCase().includes(filterLower) ||
-        log.message.toLowerCase().includes(filterLower)
-      );
-    }else{
+    if (!this._filterText) {
       this.filteredLogs = [...this.allLogs];
+    } else {
+      const filter = this._filterText.toLowerCase();
+      this.filteredLogs = this.allLogs.filter(log =>
+        log.level.toLowerCase().includes(filter) ||
+        log.message.toLowerCase().includes(filter)
+      );
     }
   }
 
   //TODO Finish implementation
   public togglePause(): void{
+    console.log("Im being paused");
     this.isPaused = !this.isPaused;
     if (this.isPaused){
       // TODO

@@ -46,12 +46,12 @@ export class WebsocketService {
       const serverMessage: LogMessage= JSON.parse(event.data);
 
       const currentMessages = this.messagesSubject.getValue();
-      const updatedMessages = [serverMessage, ...currentMessages];
+      currentMessages.push(serverMessage)
 
-      if (updatedMessages.length > MAX_LOGS){
-      updatedMessages.pop();
+      if (currentMessages.length > MAX_LOGS){
+        currentMessages.pop();
       }
-      this.messagesSubject.next(updatedMessages);
+      this.messagesSubject.next(currentMessages);
     };
 
     this.socket.onclose = (event) => {

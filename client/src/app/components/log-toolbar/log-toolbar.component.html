@@ -1,0 +1,25 @@
+<div class="toolbar">
+  <div class="filter-container">
+    <input 
+      type="text" 
+      [(ngModel)]="filterText" 
+      (ngModelChange)="filterChanged.emit($event)" 
+      placeholder="Filter by level or message..." 
+      class="filter-input">
+  </div>
+  <div class="controls">
+    <button (click)="pauseToggled.emit()" class="control-button">
+      {{ isPaused ? 'Resume' : 'Pause' }}
+    </button>
+    <button (click)="stopClicked.emit()" class="control-button stop-button">Stop</button>
+    <button (click)="clearClicked.emit()" class="control-button">Clear</button>
+    <div class="autoscroll-toggle">
+      <input 
+        type="checkbox" 
+        id="autoscroll" 
+        [ngModel]="autoScroll"
+        (ngModelChange)="autoScrollChanged.emit($event)">
+      <label for="autoscroll">Auto-scroll</label>
+    </div>
+  </div>
+</div>

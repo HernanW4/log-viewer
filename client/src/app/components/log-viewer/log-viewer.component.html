@@ -1,20 +1,4 @@
 <div class="log-viewer-container">
-  <div class="toolbar">
-    <div class="filter-container">
-      <input type="text" [(ngModel)]="filterText" (ngModelChange)="applyFilter()" placeholder="Filter by level or message..." class="filter-input"> 
-    </div>
-    <div class="controls">
-      <button (click)="togglePause()" class="control-button">
-        {{ isPaused ? 'Resume' : 'Pause' }}
-      </button>
-      <button (click)="stop()" class="control-button stop-button">Stop</button>
-      <button (click)="clearLogs()" class="control-button">Clear</button>
-      <div class="autoscroll-toggle">
-        <input type="checkbox" id="autoscroll" [(ngModel)]="autoScroll">
-        <label for="autoscroll">Auto-scroll</label>
-      </div>
-    </div>
-  </div>
   <div class="table-container" #logContainer>
     <table class="log-table">
       <thead>

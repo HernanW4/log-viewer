@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LogViewerComponent } from './log-viewer.component';
 import { WebsocketService } from '../../services/websocket.service';
 import { LogLevel, LogMessage } from '../../models/log-message';
-import { Subject } from 'rxjs'; // Subject is a great tool for mocking observables
+import { Subject } from 'rxjs'; 
 
 const mockWebsocketService = {
   messages$: new Subject<LogMessage[]>(),
@@ -64,7 +64,7 @@ describe('LogViewerComponent', () => {
     mockWebsocketService.messages$.next(dummyLogs);
     fixture.detectChanges();
 
-    component.filterText = 'error';
+    component.setFilterText('error');
     component.applyFilter();
     fixture.detectChanges();
 
