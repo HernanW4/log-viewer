@@ -50,11 +50,17 @@ describe('LogViewerComponent', () => {
     expect(component.allLogs[1].message).toEqual('Test log 2');
   });
 
-  it('should call websocketService.clearLogs when clearLogs() is called', () => {
-    component.clearLogs();
-    
-    expect(mockWebsocketService.clearLogs).toHaveBeenCalled();
-  });
+  it('should clear its internal log arrays when clearLogs() is called', () => {
+    component.allLogs = [{ timestamp: new Date().toISOString(), level: LogLevel.INFO, message: 'Test log 1' },
+    ];
+    component.filteredLogs = [{ timestamp: new Date().toISOString(), level: LogLevel.INFO, message: 'Test log 1' },
+    ];
 
+    component.clearLogs();
+
+    expect(component.allLogs.length).toBe(0);
+    expect(component.filteredLogs.length).toBe(0);
+    expect(component.lastCleared).not.toBeNull();
+});
 
 });

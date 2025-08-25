@@ -32,13 +32,17 @@ export class LogViewerComponent implements OnInit, OnDestroy, OnChanges {
 
   public isPaused = false;
 
-  private logSubscription: Subscription | undefined;
-  private lastCleared: Date | null = null;
+  private _logSubscription: Subscription | undefined;
+  private _lastCleared: Date | null = null;
+
+  public get lastCleared(){
+    return this._lastCleared;
+  }
 
   constructor(private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
-    this.logSubscription = this.websocketService.messages$.subscribe(
+    this._logSubscription = this.websocketService.messages$.subscribe(
       (logsFromService) => {
         if (this.isPaused) return;
 
@@ -66,8 +70,8 @@ export class LogViewerComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
-    if (this.logSubscription) {
-      this.logSubscription.unsubscribe();
+    if (this._logSubscription) {
+      this._logSubscription.unsubscribe();
     }
     this.websocketService.close();
   }
@@ -103,7 +107,7 @@ export class LogViewerComponent implements OnInit, OnDestroy, OnChanges {
   public clearLogs(): void {
     this.allLogs = [];
     this.filteredLogs = [];
-    this.lastCleared = new Date();
+    this._lastCleared = new Date();
   }
 
 

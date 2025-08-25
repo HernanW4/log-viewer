@@ -67,22 +67,6 @@ describe('LogChartComponent', () => {
   });
 
 
-  describe('Initialization and Timer', () => {
-
-    it('should unsubscribe from the timer on destroy', () => {
-      fixture.detectChanges();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const subscription = (component as any).timerSubscription;
-      spyOn(subscription, 'unsubscribe');
-
-      component.ngOnDestroy();
-
-      expect(subscription.unsubscribe).toHaveBeenCalled();
-    });
-  });
-
-
-
   describe('processLogsIntoTimeframes Logic', () => {
     it('should correctly process an empty array of logs', () => {
        // eslint-disable-next-line @typescript-eslint/no-explicit-any

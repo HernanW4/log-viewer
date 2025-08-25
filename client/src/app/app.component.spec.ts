@@ -1,18 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { AppComponent } from './app.component';
-
 import { ThemeService } from './services/theme.service';
+import { LogToolbarComponent } from './components/log-toolbar/log-toolbar.component';
 import { LogViewerComponent } from './components/log-viewer/log-viewer.component';
 import { LogChartComponent } from './components/log-chart/log-chart.component';
 
+
+@Component({ selector: 'app-log-toolbar', template: '', standalone: true })
+class MockLogToolbarComponent {
+  @Input() isPaused: boolean | undefined;
+  @Input() autoScroll: boolean | undefined;
+  @Input() filterText: string | undefined;
+  @Input() isChartVisible: boolean | undefined;
+  @Input() isDarkMode: boolean | undefined;
+}
+
 @Component({ selector: 'app-log-chart', template: '', standalone: true })
-class MockLogChartComponent {}
+class MockLogChartComponent {
+  @Input() isChartVisible: boolean | undefined;
+}
 
 @Component({ selector: 'app-log-viewer', template: '', standalone: true })
-class MockLogViewerComponent {}
+class MockLogViewerComponent {
+  @Input() autoScroll: boolean | undefined;
+  @Input() filterText: string | undefined;
+  setFilterText() {}
+  togglePause() {}
+  clearLogs() {}
+}
 
 
 const mockThemeService = jasmine.createSpyObj('ThemeService', [
@@ -31,8 +49,8 @@ describe('AppComponent', () => {
       imports: [AppComponent],
     })
     .overrideComponent(AppComponent, {
-      remove: { imports: [LogViewerComponent, LogChartComponent] },
-      add: { imports: [MockLogViewerComponent, MockLogChartComponent] },
+      remove: { imports: [LogToolbarComponent, LogViewerComponent, LogChartComponent] },
+      add: { imports: [MockLogToolbarComponent, MockLogViewerComponent, MockLogChartComponent] },
     })
     .configureTestingModule({
       providers: [
@@ -47,6 +65,7 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
 
   it('should create the app', () => {
     expect(component).toBeTruthy();
@@ -78,8 +97,6 @@ describe('AppComponent', () => {
     expect(viewerComponent).toBeTruthy();
   });
 
-
-
   it('should call ThemeService methods on initialization', () => {
     expect(mockThemeService.detectInitialTheme).toHaveBeenCalled();
     expect(mockThemeService.listenForThemeChanges).toHaveBeenCalled();
@@ -87,7 +104,6 @@ describe('AppComponent', () => {
 
   it('should call ThemeService.toggleTheme when toggleTheme() is called', () => {
     component.toggleTheme();
-
     expect(mockThemeService.toggleTheme).toHaveBeenCalled();
   });
 });
