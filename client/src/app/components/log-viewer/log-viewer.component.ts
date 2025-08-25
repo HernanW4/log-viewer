@@ -41,20 +41,29 @@ export class LogViewerComponent implements OnInit, OnDestroy , AfterViewChecked{
   private logSubscription: Subscription | undefined;
   private filterText: string = '';
   private shouldScroll = false;
+  private lastCleared: Date | null = null;
 
   constructor(private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
     //Subscribe to websocket messages 
     this.logSubscription = this.websocketService.messages$.subscribe(
-      (logs) => {
-        this.allLogs = logs;
-        this.applyFilter();
+      (logsFromService) => {
+        let logsForView = logsFromService;
 
-        this.shouldScroll = true;
-      }
-    );
-  }
+        //Keep track of timestamp user clicked clear, so we don't show messages from before that timestamp
+        if (this.lastCleared) {
+          logsForView = logsFromService.filter(log => new Date(log.timestamp) > this.lastCleared!);
+        }
+
+        //Avoid pointless re-rendering.
+        if (this.allLogs.length !== logsForView.length || this.allLogs.length === 0) {
+          this.allLogs = logsForView;
+          this.applyFilter();
+          this.shouldScroll = true;
+        }
+      });
+    }
 
   ngOnDestroy(): void {
     if (this.logSubscription) {
@@ -106,8 +115,12 @@ export class LogViewerComponent implements OnInit, OnDestroy , AfterViewChecked{
     }
   }
 
+  //Public method when the Clear method it's clicked
   public clearLogs():void{
-    this.websocketService.clearLogs();
+    this.allLogs = [];
+    this.filteredLogs = [];
+
+    this.lastCleared = new Date();
   }
 
   
