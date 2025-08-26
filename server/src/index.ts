@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 
 import { LogLevel, LogMessage } from "./types.js"
 import { ClientConnection } from "./client-connection.js";
+import { LoremIpsum } from "lorem-ipsum";
 
 dotenv.config();
 
@@ -13,19 +14,22 @@ const wss = new WebSocketServer({port: port});
 const MAX_INTERVAL_TIME = 10000; // 10 seconds
 const MIN_INTERVAL_TIME = 1000; // 1 second
 
+const lorem = new LoremIpsum();
+
+
 wss.on('connection', (ws) =>{
   new ClientConnection(ws);
 });
 
-// Dummy Logs
-// TODO: Maybe have a Lorem file and it will randomize message from there? 
 const createDummyLog = (): LogMessage => {
   const logLevels = Object.values(LogLevel);
   const randomLevel = logLevels[Math.floor(Math.random() * logLevels.length)];
+  const randomMessage = lorem.generateSentences(1);
+
   return {
     timestamp: new Date().toISOString(),
     level: randomLevel,
-    message: `Dummy Log.`,
+    message: randomMessage,
   };
 };
 
@@ -45,4 +49,3 @@ function sendRandomLog() {
 } 
 
 sendRandomLog();
-
