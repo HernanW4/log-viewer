@@ -1,0 +1,22 @@
+<div class="chart-wrapper">
+  <ng-container *ngIf="chartData && chartData.length > 0; else emptyState">
+    <ngx-charts-bar-vertical-stacked
+      [results]="chartData"
+      [scheme]="colorScheme"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [barPadding]="barPadding"
+      [legend]="showLegend"
+      [gradient]="gradient"
+      [showXAxisLabel]="showXAxisLabel"
+      [yScaleMax]="yScaleMax"
+      [showYAxisLabel]="showYAxisLabel">
+    </ngx-charts-bar-vertical-stacked>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <span>Waiting for log data...</span>
+    </div>
+  </ng-template>
+</div>

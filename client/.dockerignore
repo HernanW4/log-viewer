@@ -1,0 +1,17 @@
+# Node.js specific ignores
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+
+# Build artifacts and temporary files
+dist/
+build/
+tmp/
+*.log
+
+# Version control and editor specific files
+.git/
+.gitignore
+.vscode/
+.idea/

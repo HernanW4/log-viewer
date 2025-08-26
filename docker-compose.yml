@@ -1,0 +1,25 @@
+services:
+  log-viewer-client-app:
+    container_name: viewer-app
+    build: ./client
+    image: log-viewer-client-app:v1
+    ports:
+      - ${CLIENT_PORT:-8080}:80
+    environment:
+      - WEBSOCKET_URL=ws://localhost:${SERVER_PORT:-3000}
+    networks:
+      - internalnet
+
+  log-viewer-server-app:
+    container_name: server-app
+    build: ./server
+    image: log-viewer-server-app:v1
+    restart: always
+    ports:
+      - "${SERVER_PORT:-3000}:3000"
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge

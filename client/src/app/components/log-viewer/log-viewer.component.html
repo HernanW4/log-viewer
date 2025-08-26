@@ -1,0 +1,43 @@
+<div class="log-viewer-container" #logContainer>
+  <!-- MODIFIED: table-container is now the log-viewer-container -->
+  <table class="log-table">
+    <thead>
+      <tr>
+        <th class="level-col" [style.width.px]="colWidths.level" appResizable [minWidth]="colWidths.level">
+          Level
+          <div class="resizer"></div>
+        </th>
+        <th class="timestamp-col" [style.width.px]="colWidths.timestamp" appResizable [minWidth]="colWidths.timestamp">
+          Timestamp
+          <div class="resizer"></div>
+        </th>
+        <th class="message-col">
+          Message
+        </th>
+      </tr>
+    </thead>
+    <ng-container *ngIf="filteredLogs.length > 0; else emptyState">
+      <tbody>
+        <tr *ngFor="let log of filteredLogs; trackBy: trackByLog" class="log-entry">
+          <td class="level-cell">
+            <div class="log-level" [ngClass]="getLogLevelClass(log.level)">
+              <span class="log-icon"></span> 
+              <span>{{ log.level }}</span>
+            </div>
+          </td>
+          <td class="timestamp-cell">{{ log.timestamp | date:'medium' }}</td>
+          <td class="message-cell">{{ log.message }}</td>
+        </tr>
+      </tbody>
+    </ng-container>
+  </table>
+
+  <!-- NEW: Empty state template -->
+  <ng-template #emptyState>
+    <div class="empty-state-container">
+      <span class="empty-state-message">
+        {{ filterText ? 'No logs match your filter.' : 'Waiting for logs...' }}
+      </span>
+    </div>
+  </ng-template>
+</div>

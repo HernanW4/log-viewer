@@ -1,0 +1,96 @@
+/* MODIFIED: .log-viewer-container is now the primary scroll container */
+.log-viewer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  font-family: 'Consolas', 'Monaco', monospace;
+  overflow-y: auto; 
+  position: relative; /* Needed for empty state positioning */
+}
+
+
+.log-table {
+  width: 100%;
+  border-collapse: collapse; 
+  border-bottom: 1-px solid var(--color-bg-secondary);
+  table-layout: fixed;
+}
+
+.log-table td{
+  background-color: var(--color-bg-primary);
+  padding: 8px 10px;
+  border: 2px solid var(--color-border-secondary); 
+  vertical-align: top;
+}
+
+.log-table th {
+  padding: 10px;
+  text-align: left;
+  position: sticky; /* Sticky header for better UX on scroll */
+  top: 0;
+  background-color: var(--color-bg-tertiary);
+  z-index: 1; /* Ensures header stays above content */
+  box-sizing: border-box; 
+}
+
+.resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  background-color: var(--color-border-secondary);
+  transition: background-color 0.2s;
+}
+
+.resizer:hover {
+  background-color: var(--color-accent);
+}
+
+.timestamp-cell {
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+.log-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
+  font-weight: bold;
+}
+
+.log-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-color: currentColor; /* Default color */
+}
+
+.log-level-info { color: var(--color-info); }
+.log-level-warn { color: var(--color-warn); }
+.log-level-error { color: var(--color-error); }
+.log-level-debug { color: var(--color-debug); }
+.log-level-unknown { color: var(--color-text-tertiary); }
+
+
+@keyframes flash-new-row {
+  from { background-color: var(--color-accent-hover); }
+  to { background-color: var(--color-bg-primary); }
+}
+
+.log-entry.new {
+  animation: flash-new-row 1s ease-out;
+}
+
+.empty-state-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
