@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.1",
+    "lorem-ipsum": "^2.0.8",
     "ws": "^8.18.3"
   }
 }
